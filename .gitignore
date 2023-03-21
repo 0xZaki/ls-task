@@ -1,0 +1,3 @@
+# add deafutl git ignore for nodejs
+node_modules
+.env
