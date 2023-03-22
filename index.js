@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose')
+const morgan = require('morgan');
 
 const tasks = require('./routes/tasks.js');
 const auth = require('./routes/auth.js');
@@ -9,6 +10,7 @@ const middleware = require('./middlewares/errorHandler.js');
 const app = express();
 
 app.use(express.json());
+app.use(morgan('tiny'));
 
 
 app.use('/api/v1/tasks', tasks);
@@ -17,7 +19,7 @@ app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 const start = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
