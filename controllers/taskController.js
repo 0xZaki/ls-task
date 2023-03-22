@@ -43,7 +43,6 @@ const getTask = async (req, res, next) => {
 
 const updateTask = async (req, res, next) => {
     try {
-        const { is_done, title, description } = req.body
         const task = await Task.findById(req.params.id)
         if (!task) {
             return res.status(404).json({ msg: 'Task not found' })
@@ -51,16 +50,15 @@ const updateTask = async (req, res, next) => {
         if (task.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'Not authorized' })
         }
-        task.is_done = is_done
-        task.title = title
-        task.description = description
+        task.is_done = req.body.is_done ?? task.is_done
+        task.title = req.body.title ?? task.title
+        task.description = req.body.description ?? task.description
         await task.save()
         res.json(task)
     } catch (err) {
         next(err)
     }
 }
-
 
 const deleteTask = async (req, res, next) => {
     try {
